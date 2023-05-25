@@ -1,8 +1,7 @@
 import "./style.css";
-import darkSpace from "./images/dark_space.jpg";
+import darkSpace from "./dark.jpg";
 import planetTextureImage from "./images/planet_texture.jpg";
 import planetImage from "./images/planet.jpg";
-import photo from "./images/me.jpg";
 
 //import three js library
 import * as THREE from "three";
@@ -75,7 +74,7 @@ scene.add(pointLight, ambientLight);
 //grid helper shows 2D grid for scene
 const lightHelper = new THREE.PointLightHelper(pointLight);
 const gridHelper = new THREE.GridHelper(200, 50);
-scene.add(lightHelper, gridHelper);
+// scene.add(lightHelper, gridHelper);
 
 //add orbit controls
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -88,7 +87,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 function addStar() {
   // SphereGeometry argument is radius
   const geometry = new THREE.SphereGeometry(0.25, 24, 24);
-  const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  const material = new THREE.MeshStandardMaterial({ color: 0xdce7f4 });
   const star = new THREE.Mesh(geometry, material);
 
   //setting random x, y, z position values for each star
@@ -122,6 +121,28 @@ const planet = new THREE.Mesh(
 );
 
 scene.add(planet);
+planet.position.x = 18;
+planet.position.y = 18;
+
+//
+//
+//SCROLL BEHAVIOUR
+function moveCamera() {
+  //calculate where user is currently scrolled to
+  const t = document.body.getBoundingClientRect().top;
+
+  //rotate planet while scrolling
+  planet.rotation.x += 0.05;
+  planet.rotation.y += 0.075;
+  planet.rotation.z += 0.05;
+
+  camera.position.z = t * -0.01;
+  camera.position.x = t * -0.0002;
+  camera.position.y = t * -0.0002;
+}
+
+//initiates function every time user scrolls
+document.body.onscroll = moveCamera;
 
 //
 //
